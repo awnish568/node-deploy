@@ -47,7 +47,28 @@ server.use('*', (req, res) => {        // route for addProduct
 
 
 
-
 server.listen(process.env.PORT, () => {
   console.log('server started');
 });  
+
+
+
+// To deploy on the versel we go to option add new project in versel. then we fill project name and set the environment
+// variables as .env file is not uploaded on github (like node_modiles) for safety puprpses. generally we don't need to add
+// port to the environment variable on versel becoz they themselves create it
+
+// note that when we deploy on the versel and if any error occurs (visiting the functions option under deployments tab
+// we get errors) then we need to edit the code in vs code and upload to github(and from there versel automatically deploy
+// it again). This process of figuring out error and edtiting is very tiresome.
+
+// note that vercel have its own configuration and if we don't add this to our project then our deployment will not
+// work propelry eg if we have public directory in the project then it will simply staticallly host it instead of 
+// deploying the nodeJS application
+// Inside the configuration we have two things - builds and routes.
+// build tells all the server types. Inside build we say that dynamic server is node and build is static
+// routes tells that if url starts with slash then go to the destination given with route.
+// and now since w ehave decided staic and dynamic differently so in routing we now have to decide which should go to the
+// nodeJS or should go to the static
+// eg here if route is /products or /products/(.*) then go to index.js (ie dynamic) but if route is (.*) ie anything else
+// than /products or /products/(.*) then go to build(ie static)
+// above (.*) means any url
